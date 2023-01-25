@@ -73,8 +73,8 @@ function myStartup1(context) {
               uploadPath
             ).then((uploadResponse) => {
               console.log("upload response", uploadResponse);
-              if (uploadResponse["key"]) {
-                data[uploadResponse["key"]].url = uploadResponse.url;
+              if (uploadResponse[key]) {
+                data[uploadResponse[key]].url = uploadResponse.url;
               }
             });
             uploads.push(promise);
@@ -86,7 +86,7 @@ function myStartup1(context) {
           });
           Promise.all(uploads)
             .then(async function () {
-              console.log(data);
+              console.log("data in promises", data);
               res.send({
                 status: true,
                 message: "Files are uploaded",
@@ -122,6 +122,7 @@ function myStartup1(context) {
             uploadPath
           ).then((uploadResponse) => {
             data[0].url = uploadResponse.url;
+            console.log("upload response is ", uploadResponse);
 
             res.send({
               status: true,

@@ -48,6 +48,7 @@ export async function S3UploadImage(fileContent, uploadName, key, fileType, uplo
     const currentTime = Date.now();
     const urlsArray = [];
     if (fileType === "image") {
+      // for uploading images
       const resizedImages = await Promise.all(imgTransforms.map(async (transform) => {
         let { name, size, fit, format, type } = transform;
         return await sharp(fileContent)
@@ -66,17 +67,18 @@ export async function S3UploadImage(fileContent, uploadName, key, fileType, uplo
           Key: `${uploadPath}/${imgTransforms[index].name}-${currentTime}-${uploadName}`,
           Body: image,
         };
-        const { Location } = await s3.upload(params).promise();
-        urlsArray.push(Location);
+        const { Location, Key } = await s3.upload(params).promise();
+        urlsArray.push(Key);
       }));
     } else {
+      // for uploading documents only
       const params = {
         Bucket: BUCKET_NAME,
         Key: `${uploadPath}/${uploadName}`,
         Body: fileContent,
       };
-      const { Location } = await s3.upload(params).promise();
-      urlsArray.push(Location);
+      const { Location, Key } = await s3.upload(params).promise();
+      urlsArray.push(Key);
     }
     return {
       status: true,

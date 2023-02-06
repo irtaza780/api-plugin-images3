@@ -68,7 +68,7 @@ export async function S3UploadImage(fileContent, uploadName, key, fileType, uplo
           Body: image,
         };
         const { Location, Key } = await s3.upload(params).promise();
-        urlsArray.push(Key);
+        urlsArray.push({Location, Key});
       }));
     } else {
       // for uploading documents only
@@ -78,7 +78,7 @@ export async function S3UploadImage(fileContent, uploadName, key, fileType, uplo
         Body: fileContent,
       };
       const { Location, Key } = await s3.upload(params).promise();
-      urlsArray.push(Key);
+      urlsArray.push({Location, Key});
     }
     return {
       status: true,

@@ -25,7 +25,7 @@ const resolvers = {
     },
   },
   Account: {
-    picture: async (parent, args, context, info) => await getSignedUrl(parent.profile.picture) ?? 'null',
+    picture: async (parent, args, context, info) => await getSignedUrl(parent.profile.picture) ?? [],
     govId: (parent, args, context, info) => {
       return Promise.all(parent?.govId?.map(async (e) => {
         return {

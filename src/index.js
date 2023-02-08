@@ -27,22 +27,23 @@ const resolvers = {
   Account: {
     picture: async (parent, args, context, info) =>  parent?.profile?.picture ? await getSignedUrl(parent?.profile?.picture) : "",
     govId: (parent, args, context, info) => {
-      return Promise.all(parent?.govId?.map(async (e) => {
+      return parent?.govId ? Promise.all(parent?.govId?.map(async (e) => {
         return {
           key: e?.key,
           value: await getSignedUrl(e?.value)
         }
-      })) ?? []
+      })) : []
       // account.govId ?? []
     },
     poAddress: async (parent, args, context, info) => {
-      return Promise.all(parent?.poAddress?.map(async (e) => {
+      return parent?.poAddress ? Promise.all(parent?.poAddress?.map(async (e) => {
         return {
           address: e.address,
           type: e.type,
           document: await getSignedUrl(e?.document)
         }
-      })) ?? []},
+      })) : []
+    },
   }
 };
 

@@ -6,6 +6,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import morgan from "morgan";
 import _ from "lodash";
+import getSignedUrl from "./utils/signedUrls.js";
 import { S3UploadImage, S3UploadDocument } from "./utils/s3Upload.js";
 import sharp from "sharp";
 const mySchema = importAsString("./schema.graphql");
@@ -23,6 +24,27 @@ const resolvers = {
       return parent.media ? parent.media : [];
     },
   },
+  Account: {
+    picture: async (parent, args, context, info) =>  parent?.profile?.picture ? await getSignedUrl(parent?.profile?.picture) : "",
+    govId: (parent, args, context, info) => {
+      return parent?.govId ? Promise.all(parent?.govId?.map(async (e) => {
+        return {
+          key: e?.key,
+          value: await getSignedUrl(e?.value)
+        }
+      })) : []
+      // account.govId ?? []
+    },
+    poAddress: async (parent, args, context, info) => {
+      return parent?.poAddress ? Promise.all(parent?.poAddress?.map(async (e) => {
+        return {
+          address: e.address,
+          type: e.type,
+          document: await getSignedUrl(e?.document)
+        }
+      })) : []
+    },
+  }
 };
 
 function myStartup1(context) {
@@ -73,8 +95,8 @@ function myStartup1(context) {
               uploadPath
             ).then((uploadResponse) => {
               console.log("upload response", uploadResponse);
-              if (uploadResponse["key"]) {
-                data[uploadResponse["key"]].url = uploadResponse.url;
+              if (uploadResponse[key]) {
+                data[uploadResponse[key]].url = uploadResponse.url;
               }
             });
             uploads.push(promise);
@@ -86,7 +108,7 @@ function myStartup1(context) {
           });
           Promise.all(uploads)
             .then(async function () {
-              console.log(data);
+              console.log("data in promises", data);
               res.send({
                 status: true,
                 message: "Files are uploaded",
@@ -122,6 +144,7 @@ function myStartup1(context) {
             uploadPath
           ).then((uploadResponse) => {
             data[0].url = uploadResponse.url;
+            console.log("upload response is ", uploadResponse);
 
             res.send({
               status: true,
@@ -232,16 +255,16 @@ async function S3PublishMedia(
   const { Product } = collections;
   // let productObj=await getProductMedia(context,catalogProduct.productId);
   catalogProduct.media = product.media;
-  catalogProduct.primaryImage = product.media[0];
+  catalogProduct.primaryImage = product?.media?.[0];
   catalogProduct.variants &&
     catalogProduct.variants.map(async (catalogVariant) => {
       const productVariant = variants.find(
         (variant) => variant._id === catalogVariant.variantId
       );
-      catalogVariant.uploadedBy = productVariant.uploadedBy || null;
-      catalogVariant.ancestorId = productVariant["ancestors"][0]
-        ? productVariant["ancestors"][0]
-        : null;
+      // catalogVariant.uploadedBy = productVariant.uploadedBy || null;
+      // catalogVariant.ancestorId = productVariant["ancestors"][0]
+        // ? productVariant["ancestors"][0]
+        // : null;
 
       catalogVariant.media = productVariant.media;
     });

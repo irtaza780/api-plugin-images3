@@ -1,5 +1,5 @@
 {
-  "name": "@husamaz1994/api-plugin-images3",
+  "name": "@partown/api-plugin-images3",
   "description": "Boilerplate Example plugin for the Reaction API",
   "version": "1.0.3",
   "main": "index.js",

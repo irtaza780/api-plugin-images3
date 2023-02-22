@@ -15,9 +15,10 @@ var _context = null;
 
 const resolvers = {
   Product: {
-    async media(parent, args, context, info) {
-      return parent.media;
-    },
+    picture: async (parent, args, context, info) =>
+      parent?.profile?.picture
+        ? await getSignedUrl(parent?.profile?.picture)
+        : "",
   },
   ProductVariant: {
     async media(parent, args, context, info) {
@@ -25,26 +26,37 @@ const resolvers = {
     },
   },
   Account: {
-    picture: async (parent, args, context, info) =>  parent?.profile?.picture ? await getSignedUrl(parent?.profile?.picture) : "",
+    picture: async (parent, args, context, info) =>
+      parent?.profile?.picture
+        ? await getSignedUrl(parent?.profile?.picture)
+        : "",
     govId: (parent, args, context, info) => {
-      return parent?.govId ? Promise.all(parent?.govId?.map(async (e) => {
-        return {
-          key: e?.key,
-          value: await getSignedUrl(e?.value)
-        }
-      })) : []
+      return parent?.govId
+        ? Promise.all(
+            parent?.govId?.map(async (e) => {
+              return {
+                key: e?.key,
+                value: await getSignedUrl(e?.value),
+              };
+            })
+          )
+        : [];
       // account.govId ?? []
     },
     poAddress: async (parent, args, context, info) => {
-      return parent?.poAddress ? Promise.all(parent?.poAddress?.map(async (e) => {
-        return {
-          address: e.address,
-          type: e.type,
-          document: await getSignedUrl(e?.document)
-        }
-      })) : []
+      return parent?.poAddress
+        ? Promise.all(
+            parent?.poAddress?.map(async (e) => {
+              return {
+                address: e.address,
+                type: e.type,
+                document: await getSignedUrl(e?.document),
+              };
+            })
+          )
+        : [];
     },
-  }
+  },
 };
 
 function myStartup1(context) {
@@ -263,8 +275,8 @@ async function S3PublishMedia(
       );
       // catalogVariant.uploadedBy = productVariant.uploadedBy || null;
       // catalogVariant.ancestorId = productVariant["ancestors"][0]
-        // ? productVariant["ancestors"][0]
-        // : null;
+      // ? productVariant["ancestors"][0]
+      // : null;
 
       catalogVariant.media = productVariant.media;
     });

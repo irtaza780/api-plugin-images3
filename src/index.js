@@ -15,15 +15,12 @@ var _context = null;
 
 const resolvers = {
   Product: {
-    picture: async (parent, args, context, info) =>
-      parent?.profile?.picture
-        ? await getSignedUrl(parent?.profile?.picture)
-        : "",
+    media: async (parent, args, context, info) =>
+      parent?.media ? await getSignedUrl(parent?.media) : "",
   },
   ProductVariant: {
-    async media(parent, args, context, info) {
-      return parent.media ? parent.media : [];
-    },
+    media: async (parent, args, context, info) =>
+      parent?.media ? await getSignedUrl(parent?.media) : "",
   },
   Account: {
     picture: async (parent, args, context, info) =>

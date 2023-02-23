@@ -45,6 +45,23 @@ const resolvers = {
           )
         : [];
     },
+    primaryImage: async (parent, args, context, info) => {
+      return parent?.primaryImage
+        ? Promise.all(
+            parent?.media?.map(async (e) => {
+              return {
+                URLs: {
+                  thumbnail: await getSignedUrl(e?.URLs.thumbnail),
+                  large: await getSignedUrl(e?.URLs.large),
+                  medium: await getSignedUrl(e?.URLs.medium),
+                  original: await getSignedUrl(e?.URLs.original),
+                  small: await getSignedUrl(e?.URLs.small),
+                },
+              };
+            })
+          )
+        : [];
+    },
     planMedia: async (parent, args, context, info) => {
       return parent?.media
         ? Promise.all(

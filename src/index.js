@@ -15,8 +15,35 @@ var _context = null;
 
 const resolvers = {
   Product: {
-    async media(parent, args, context, info) {
-      return parent.media;
+    media: async (parent, args, context, info) => {
+      return parent?.media
+        ? Promise.all(
+            parent?.media?.map(async (e) => {
+              return {
+                priority: e.priority,
+                productId: e.productId,
+                URLs: {
+                  thumbnail: await getSignedUrl(e?.URLs.thumbnail),
+                  large: await getSignedUrl(e?.URLs.large),
+                  medium: await getSignedUrl(e?.URLs.medium),
+                  original: await getSignedUrl(e?.URLs.original),
+                  small: await getSignedUrl(e?.URLs.small),
+                },
+              };
+            })
+          )
+        : [];
+    },
+    planMedia: async (parent, args, context, info) => {
+      return parent?.media
+        ? Promise.all(
+            parent?.planMedia?.map(async (e) => {
+              return {
+                url: await getSignedUrl(e?.url),
+              };
+            })
+          )
+        : [];
     },
   },
   ProductVariant: {
@@ -137,11 +164,9 @@ function myStartup1(context) {
           //loop all files
           _.forEach(_.keysIn(req.files.photos), (key) => {
             let photo = req.files.photos[key];
-            console.log("multi photos are ", photo);
-
             let getType = photo.mimetype.split("/");
             console.log("get type is ", getType);
-            let fileType = getType[0];
+            let fileType = getType[key];
             console.log("file type is ", fileType);
             let promise = S3UploadImage(
               req.files.photos[key].data,
@@ -161,20 +186,30 @@ function myStartup1(context) {
               mimetype: photo.mimetype,
               size: photo.size,
             });
-          });
-          Promise.all(uploads)
-            .then(async function () {
-              console.log("data in promises", data);
-              res.send({
-                status: true,
-                message: "Files are uploaded",
-                data: data,
+            Promise.all(uploads);
+            S3UploadImage(
+              req.files.photos.data,
+              req.files.photos.name,
+              0,
+              fileType,
+              uploadPath
+            )
+              .then((uploadResponse) => {
+                data[0].url = uploadResponse.url;
+                console.log("upload response is ", uploadResponse);
+
+                res.send({
+                  status: true,
+                  message: "File is uploaded",
+                  data,
+                });
+              })
+              .catch(function (err) {
+                console.log(err);
+                res.send(err);
               });
-            })
-            .catch(function (err) {
-              console.log(err);
-              res.send(err);
-            });
+          });
+
           //return response
         } else if (isMulti == "false") {
           let data = [];

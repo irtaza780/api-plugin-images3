@@ -15,45 +15,45 @@ const Metafield = new SimpleSchema({
   key: {
     type: String,
     max: 30,
-    optional: true
+    optional: true,
   },
   namespace: {
     type: String,
     max: 20,
-    optional: true
+    optional: true,
   },
   scope: {
     type: String,
-    optional: true
+    optional: true,
   },
   value: {
     type: String,
-    optional: true
+    optional: true,
   },
   valueType: {
     type: String,
-    optional: true
+    optional: true,
   },
   description: {
     type: String,
-    optional: true
-  }
+    optional: true,
+  },
 });
 export const OwnerInfo = new SimpleSchema({
   userId: {
     type: String,
     max: 30,
-    optional: true
+    optional: true,
   },
   image: {
     type: String,
     max: 20,
-    optional: true
+    optional: true,
   },
   name: {
     type: String,
-    optional: true
-  }
+    optional: true,
+  },
 });
 /**
  * @name ShippingParcel
@@ -68,24 +68,24 @@ export const OwnerInfo = new SimpleSchema({
 export const ShippingParcel = new SimpleSchema({
   containers: {
     type: String,
-    optional: true
+    optional: true,
   },
   length: {
     type: Number,
-    optional: true
+    optional: true,
   },
   width: {
     type: Number,
-    optional: true
+    optional: true,
   },
   height: {
     type: Number,
-    optional: true
+    optional: true,
   },
   weight: {
     type: Number,
-    optional: true
-  }
+    optional: true,
+  },
 });
 
 /**
@@ -102,28 +102,28 @@ export const ImageSizes = new SimpleSchema({
   large: {
     type: String,
     label: "Large",
-    optional: true
+    optional: true,
   },
   medium: {
     type: String,
     label: "Medium",
-    optional: true
+    optional: true,
   },
   original: {
     type: String,
     label: "Original",
-    optional: true
+    optional: true,
   },
   small: {
     type: String,
     label: "Small",
-    optional: true
+    optional: true,
   },
   thumbnail: {
     type: String,
     label: "Thumbnail",
-    optional: true
-  }
+    optional: true,
+  },
 });
 
 /**
@@ -138,20 +138,20 @@ export const ImageSizes = new SimpleSchema({
 export const ImageInfo = new SimpleSchema({
   priority: {
     type: Number,
-    defaultValue: 0
+    defaultValue: 0,
   },
   productId: {
     type: String,
-    label: "Product Id"
+    label: "Product Id",
   },
   variantId: {
     type: String,
     label: "Variant Id",
-    optional: true
+    optional: true,
   },
   URLs: {
-    type: ImageSizes
-  }
+    type: ImageSizes,
+  },
 });
 
 /**
@@ -165,13 +165,13 @@ export const SocialMetadata = new SimpleSchema({
   message: {
     type: String,
     label: "Message",
-    optional: true
+    optional: true,
   },
   service: {
     type: String,
     label: "Service",
-    optional: true
-  }
+    optional: true,
+  },
 });
 
 /**
@@ -200,116 +200,117 @@ export const SocialMetadata = new SimpleSchema({
  * @property {Number} width optional, default value: `0`
  */
 export const CatalogProductOption = new SimpleSchema({
-  "_id": {
+  _id: {
     type: String,
-    label: "Catalog product variant Id"
+    label: "Catalog product variant Id",
   },
-  "attributeLabel": String,
-  "barcode": {
+  attributeLabel: String,
+  barcode: {
     type: String,
     label: "Barcode",
-    optional: true
+    optional: true,
   },
-  "createdAt": {
+  createdAt: {
     type: Date,
-    label: "Date/time this variant was created at"
+    label: "Date/time this variant was created at",
   },
-  "height": {
+  height: {
     type: Number,
     label: "Height",
     min: 0,
     optional: true,
-    defaultValue: 0
+    defaultValue: 0,
   },
-  "index": {
+  index: {
     type: SimpleSchema.Integer,
-    label: "The position of this variant among other variants at the same level of the product-variant-option hierarchy"
+    label:
+      "The position of this variant among other variants at the same level of the product-variant-option hierarchy",
   },
-  "length": {
+  length: {
     type: Number,
     label: "Length",
     min: 0,
     optional: true,
-    defaultValue: 0
+    defaultValue: 0,
   },
-  "media": {
+  media: {
     type: Array,
     label: "Media",
-    optional: true
+    optional: true,
   },
   "media.$": {
-    type: ImageInfo
+    type: ImageInfo,
   },
-  "metafields": {
+  metafields: {
     type: Array,
     label: "Metafields",
-    optional: true
+    optional: true,
   },
   "metafields.$": {
-    type: Metafield
+    type: Metafield,
   },
 
-  "ownerInfo": {
-    type: OwnerInfo
+  ownerInfo: {
+    type: OwnerInfo,
   },
-  "minOrderQuantity": {
+  minOrderQuantity: {
     type: SimpleSchema.Integer,
     label: "Minimum quantity per item in an order",
     defaultValue: 1,
-    optional: true
+    optional: true,
   },
-  "optionTitle": {
+  optionTitle: {
     type: String,
     label: "Option title",
-    optional: true
+    optional: true,
   },
-  "originCountry": {
+  originCountry: {
     type: String,
     label: "Origin country",
-    optional: true
+    optional: true,
   },
-  "primaryImage": {
+  primaryImage: {
     type: ImageInfo,
     label: "Primary Image",
-    optional: true
+    optional: true,
   },
-  "shopId": {
+  shopId: {
     type: String,
-    label: "Product ShopId"
+    label: "Product ShopId",
   },
-  "sku": {
+  sku: {
     type: String,
     label: "SKU",
-    optional: true
+    optional: true,
   },
-  "title": {
+  title: {
     type: String,
     label: "Product Title",
     defaultValue: "",
-    optional: true
+    optional: true,
   },
-  "updatedAt": {
+  updatedAt: {
     type: Date,
-    label: "Updated at"
+    label: "Updated at",
   },
-  "variantId": {
+  variantId: {
     type: String,
-    label: "Variant ID"
+    label: "Variant ID",
   },
-  "weight": {
+  weight: {
     type: Number,
     label: "Weight",
     min: 0,
     optional: true,
-    defaultValue: 0
+    defaultValue: 0,
   },
-  "width": {
+  width: {
     type: Number,
     label: "Width",
     min: 0,
     optional: true,
-    defaultValue: 0
-  }
+    defaultValue: 0,
+  },
 });
 
 /**
@@ -320,14 +321,14 @@ export const CatalogProductOption = new SimpleSchema({
  * @property {CatalogProductOption[]} options optional
  */
 export const CatalogProductVariant = CatalogProductOption.clone().extend({
-  "options": {
+  options: {
     type: Array,
     label: "Variant Options",
-    optional: true
+    optional: true,
   },
   "options.$": {
-    type: CatalogProductOption
-  }
+    type: CatalogProductOption,
+  },
 });
 
 /**
@@ -366,181 +367,181 @@ export const CatalogProductVariant = CatalogProductOption.clone().extend({
  * @property {Number} width optional, default value: `0`
  */
 export const CatalogProduct = new SimpleSchema({
-  "_id": {
+  _id: {
     type: String,
-    label: "Product Id"
+    label: "Product Id",
   },
-  "barcode": {
+  barcode: {
     type: String,
     label: "Barcode",
-    optional: true
+    optional: true,
   },
-  "createdAt": {
+  createdAt: {
     type: Date,
-    label: "Date/time this product was created at"
+    label: "Date/time this product was created at",
   },
-  "description": {
+  description: {
     type: String,
     label: "Product description",
-    optional: true
+    optional: true,
   },
-  "height": {
+  height: {
     type: Number,
     label: "Height",
     min: 0,
     optional: true,
-    defaultValue: 0
+    defaultValue: 0,
   },
-  "isDeleted": {
+  isDeleted: {
     type: Boolean,
     label: "Is deleted",
-    defaultValue: false
+    defaultValue: false,
   },
-  "isVisible": {
+  isVisible: {
     type: Boolean,
     label: "Indicates if a product is visible to shoppers",
-    defaultValue: false
+    defaultValue: false,
   },
-  "length": {
+  length: {
     type: Number,
     label: "Length",
     min: 0,
     optional: true,
-    defaultValue: 0
+    defaultValue: 0,
   },
-  "media": {
+  media: {
     type: Array,
     label: "Media",
-    optional: true
+    optional: true,
   },
   "media.$": {
-    type: ImageInfo
+    type: ImageInfo,
   },
-  "metafields": {
+  metafields: {
     type: Array,
     label: "Metafields",
-    optional: true
+    optional: true,
   },
   "metafields.$": {
-    type: Metafield
+    type: Metafield,
   },
-  "metaDescription": {
+  metaDescription: {
     type: String,
     label: "Meta description",
-    optional: true
+    optional: true,
   },
-  "minOrderQuantity": {
+  minOrderQuantity: {
     type: Number,
     label: "Minimum quantity per item in an order",
     defaultValue: 1,
-    optional: true
+    optional: true,
   },
-  "originCountry": {
+  originCountry: {
     type: String,
     label: "Origin country",
-    optional: true
+    optional: true,
   },
-  "pageTitle": {
+  pageTitle: {
     type: String,
     label: "Page title",
-    optional: true
+    optional: true,
   },
-  "parcel": {
+  parcel: {
     type: ShippingParcel,
     label: "Shipping parcel",
-    optional: true
+    optional: true,
   },
-  "primaryImage": {
+  primaryImage: {
     type: ImageInfo,
     label: "Primary Image",
-    optional: true
+    optional: true,
   },
-  "productId": {
+  productId: {
     type: String,
-    label: "Product Id"
+    label: "Product Id",
   },
-  "productType": {
+  productType: {
     type: String,
     label: "Product type",
-    optional: true
+    optional: true,
   },
-  "shopId": {
+  shopId: {
     type: String,
-    label: "Product ShopId"
+    label: "Product ShopId",
   },
-  "sku": {
+  sku: {
     type: String,
     label: "SKU",
-    optional: true
+    optional: true,
   },
-  "slug": {
+  slug: {
     type: String,
-    optional: true
+    optional: true,
   },
-  "socialMetadata": {
+  socialMetadata: {
     type: Array,
     label: "Social Metadata",
-    optional: true
+    optional: true,
   },
   "socialMetadata.$": {
-    type: SocialMetadata
+    type: SocialMetadata,
   },
-  "supportedFulfillmentTypes": {
+  supportedFulfillmentTypes: {
     type: Array,
     label: "Supported fulfillment types",
-    defaultValue: ["shipping"]
+    defaultValue: ["shipping"],
   },
   "supportedFulfillmentTypes.$": String,
-  "tagIds": {
+  tagIds: {
     type: Array,
     label: "Hashtags",
-    optional: true
+    optional: true,
   },
   "tagIds.$": {
-    type: String
+    type: String,
   },
-  "title": {
+  title: {
     type: String,
     label: "Product Title",
     defaultValue: "",
-    optional: true
+    optional: true,
   },
-  "type": {
+  type: {
     type: String,
     label: "Product type",
-    defaultValue: "product-simple"
+    defaultValue: "product-simple",
   },
-  "updatedAt": {
+  updatedAt: {
     type: Date,
-    label: "Updated at"
+    label: "Updated at",
   },
-  "variants": {
+  variants: {
     type: Array,
     label: "Product Variants",
-    optional: true
+    optional: true,
   },
   "variants.$": {
-    type: CatalogProductVariant
+    type: CatalogProductVariant,
   },
-  "vendor": {
+  vendor: {
     type: String,
     label: "Vendor",
-    optional: true
+    optional: true,
   },
-  "weight": {
+  weight: {
     type: Number,
     label: "Weight",
     min: 0,
     optional: true,
-    defaultValue: 0
+    defaultValue: 0,
   },
-  "width": {
+  width: {
     type: Number,
     label: "Width",
     min: 0,
     optional: true,
-    defaultValue: 0
-  }
+    defaultValue: 0,
+  },
 });
 
 /**
@@ -556,22 +557,22 @@ export const CatalogProduct = new SimpleSchema({
 export const Catalog = new SimpleSchema({
   _id: {
     type: String,
-    label: "Catalog item ID"
+    label: "Catalog item ID",
   },
   product: {
     type: CatalogProduct,
-    optional: true
+    optional: true,
   },
   createdAt: {
     type: Date,
-    label: "Date/time this catalog item was created at"
+    label: "Date/time this catalog item was created at",
   },
   shopId: {
     type: String,
-    label: "Product ShopId"
+    label: "Product ShopId",
   },
   updatedAt: {
     type: Date,
-    label: "Updated at"
-  }
+    label: "Updated at",
+  },
 });

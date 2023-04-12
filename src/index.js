@@ -28,6 +28,12 @@ const resolvers = {
                   medium: await getSignedUrl(e?.URLs.medium),
                   original: await getSignedUrl(e?.URLs.original),
                   small: await getSignedUrl(e?.URLs.small),
+
+                  unSignedThumbnail: e?.URLs.thumbnail,
+                  unSignedLarge: e?.URLs.large,
+                  unSignedMedium: e?.URLs.medium,
+                  unSignedOriginal: e?.URLs.original,
+                  unSignedSmall: e?.URLs.small,
                 },
               };
             })
@@ -40,6 +46,7 @@ const resolvers = {
             parent?.planMedia?.map(async (e) => {
               return {
                 url: await getSignedUrl(e?.url),
+                unsignedUrl: e?.url,
               };
             })
           )
@@ -66,6 +73,12 @@ const resolvers = {
                   medium: await getSignedUrl(e?.URLs.medium),
                   original: await getSignedUrl(e?.URLs.original),
                   small: await getSignedUrl(e?.URLs.small),
+
+                  unSignedThumbnail: e?.URLs.thumbnail,
+                  unSignedLarge: e?.URLs.large,
+                  unSignedMedium: e?.URLs.medium,
+                  unSignedOriginal: e?.URLs.original,
+                  unSignedSmall: e?.URLs.small,
                 },
               };
             })
@@ -90,6 +103,7 @@ const resolvers = {
             parent?.planMedia?.map(async (e) => {
               return {
                 url: await getSignedUrl(e?.url),
+                unsignedUrl: e?.url,
               };
             })
           )
@@ -97,10 +111,13 @@ const resolvers = {
     },
   },
   Account: {
+    unsignedProfileUrl: async (parent, args, context, info) =>
+      parent?.profile?.picture,
     picture: async (parent, args, context, info) =>
       parent?.profile?.picture
         ? await getSignedUrl(parent?.profile?.picture)
         : "",
+
     govId: (parent, args, context, info) => {
       return parent?.govId
         ? Promise.all(
@@ -108,6 +125,7 @@ const resolvers = {
               return {
                 key: e?.key,
                 value: await getSignedUrl(e?.value),
+                unsignedUrl: e?.url,
               };
             })
           )

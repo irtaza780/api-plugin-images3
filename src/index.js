@@ -52,7 +52,20 @@ const resolvers = {
           )
         : [];
     },
+    documents: async (parent, args, context, info) => {
+      return parent?.documents
+        ? Promise.all(
+            parent?.documents?.map(async (e) => {
+              return {
+                unsignedUrl: e?.url,
+                url: await getSignedUrl(e?.url),
+              };
+            })
+          )
+        : [];
+    },
   },
+
   ProductVariant: {
     async media(parent, args, context, info) {
       return parent.media ? parent.media : [];
@@ -60,6 +73,18 @@ const resolvers = {
   },
 
   CatalogProduct: {
+    documents: async (parent, args, context, info) => {
+      return parent?.documents
+        ? Promise.all(
+            parent?.documents?.map(async (e) => {
+              return {
+                unsignedUrl: e?.url,
+                url: await getSignedUrl(e?.url),
+              };
+            })
+          )
+        : [];
+    },
     media: async (parent, args, context, info) => {
       return parent?.media
         ? Promise.all(

@@ -150,7 +150,7 @@ const resolvers = {
               return {
                 key: e?.key,
                 value: await getSignedUrl(e?.value),
-                unsignedUrl: e?.url,
+                unsignedUrl: e?.value,
               };
             })
           )

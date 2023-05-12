@@ -45,6 +45,7 @@ const resolvers = {
         ? Promise.all(
             parent?.planMedia?.map(async (e) => {
               return {
+                name: e?.name,
                 url: await getSignedUrl(e?.url),
                 unsignedUrl: e?.url,
               };
@@ -127,6 +128,7 @@ const resolvers = {
         ? Promise.all(
             parent?.planMedia?.map(async (e) => {
               return {
+                name: e?.name,
                 url: await getSignedUrl(e?.url),
                 unsignedUrl: e?.url,
               };

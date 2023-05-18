@@ -173,6 +173,15 @@ const resolvers = {
         : [];
     },
   },
+  Transaction: {
+    transactionProof: async (parent, args, context, info) => {
+      console.log("parents transaction proof");
+      const signedUrl =
+        parent?.transactionProof &&
+        (await getSignedUrl(parent?.transactionProof));
+      return signedUrl ? signedUrl : null;
+    },
+  },
 };
 
 function myStartup1(context) {

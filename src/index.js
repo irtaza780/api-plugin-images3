@@ -58,6 +58,7 @@ const resolvers = {
         ? Promise.all(
             parent?.documents?.map(async (e) => {
               return {
+                name: e?.name,
                 unsignedUrl: e?.url,
                 url: await getSignedUrl(e?.url),
               };
@@ -79,6 +80,7 @@ const resolvers = {
         ? Promise.all(
             parent?.documents?.map(async (e) => {
               return {
+                name: e?.name,
                 unsignedUrl: e?.url,
                 url: await getSignedUrl(e?.url),
               };

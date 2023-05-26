@@ -175,6 +175,7 @@ const resolvers = {
         : [];
     },
   },
+
   Transaction: {
     transactionProof: async (parent, args, context, info) => {
       const signedUrl =
@@ -182,6 +183,10 @@ const resolvers = {
         (await getSignedUrl(parent?.transactionProof));
       return signedUrl ? signedUrl : null;
     },
+  },
+  UserDocuments: {
+    signedUrl: async (parent, args, context, info) =>
+      parent?.signedUrl ? await getSignedUrl(parent?.signedUrl) : "",
   },
 };
 
@@ -301,6 +306,23 @@ function myStartup1(context) {
         }
       } catch (err) {
         console.log("err", err);
+        res.status(500).send(err);
+      }
+    });
+    app.expressApp.get("/download", async (req, res) => {
+      try {
+        const { url } = req.query;
+
+        console.log("url is ", url);
+        let signedUrl = await getSignedUrl(url);
+
+        console.log("signed url is ", signedUrl);
+        if (!signedUrl) {
+          res.status(200).send({ message: "Invalid Url" });
+        }
+
+        res.send(signedUrl);
+      } catch (err) {
         res.status(500).send(err);
       }
     });

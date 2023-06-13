@@ -9,6 +9,7 @@ import _ from "lodash";
 import getSignedUrl from "./utils/signedUrls.js";
 import { S3UploadImage, S3UploadDocument } from "./utils/s3Upload.js";
 import sharp from "sharp";
+
 const mySchema = importAsString("./schema.graphql");
 
 var _context = null;

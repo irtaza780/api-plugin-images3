@@ -12,26 +12,36 @@ const promises = [];
 const imgTransforms = [
   {
     name: "image",
-    transform: { size: 1600, fit: "inside", format: "jpg", type: "image/jpeg" },
+    transform: {
+      size: 1600,
+      fit: "inside",
+      format: "webp",
+      type: "image/jpeg",
+    },
   },
   {
     name: "large",
-    transform: { size: 1000, fit: "inside", format: "jpg", type: "image/jpeg" },
+    transform: {
+      size: 1000,
+      fit: "inside",
+      format: "webp",
+      type: "image/jpeg",
+    },
   },
   {
     name: "medium",
-    transform: { size: 600, fit: "inside", format: "jpg", type: "image/jpeg" },
+    transform: { size: 600, fit: "inside", format: "webp", type: "image/jpeg" },
   },
   {
     name: "thumbnail",
-    transform: { size: 235, fit: "inside", format: "png", type: "image/png" },
+    transform: { size: 235, fit: "inside", format: "webp", type: "image/png" },
   },
 ];
 
 export async function generateThumbs(filename, uploadName, key) {
-  // for (i = 0; i < 4; i++) {
-  //   promises.push(await imageTransformAndUpload(filename, i, uploadName, key));
-  // }
+  for (i = 0; i < 4; i++) {
+    promises.push(await imageTransformAndUpload(filename, i, uploadName, key));
+  }
   await Promise.all(promises)
     .then((results) => {
       console.log("All done", results);
@@ -43,33 +53,47 @@ export async function generateThumbs(filename, uploadName, key) {
     });
 }
 
-export async function S3UploadImage(fileContent, uploadName, key, fileType, uploadPath) {
+export async function S3UploadImage(
+  fileContent,
+  uploadName,
+  key,
+  fileType,
+  uploadPath
+) {
   try {
     const currentTime = Date.now();
     const urlsArray = [];
     if (fileType === "image") {
       // for uploading images
-      const resizedImages = await Promise.all(imgTransforms.map(async (transform) => {
-        let { name, size, fit, format, type } = transform;
-        return await sharp(fileContent)
-          .resize({
-            height: size,
-            fit: sharp.fit[fit],
-            withoutEnlargement: true,
-          })
-          .webp({ lossless: false, alphaQuality: 50, quality: 80 })
-          .toBuffer();
-      }));
+      const resizedImages = await Promise.all(
+        imgTransforms.map(async (transform) => {
+          let { name, size, fit, format, type } = transform.transform;
+          console.log("transform items are ", name, size, fit, format, type);
 
-      await Promise.all(resizedImages.map(async (image, index) => {
-        const params = {
-          Bucket: BUCKET_NAME,
-          Key: `${uploadPath}/${imgTransforms[index].name}-${currentTime}-${uploadName}`,
-          Body: image,
-        };
-        const { Location, Key } = await s3.upload(params).promise();
-        urlsArray.push({Location, Key});
-      }));
+          return await sharp(fileContent)
+            .resize({
+              height: size,
+              fit: sharp.fit[fit],
+              withoutEnlargement: true,
+            })
+            .toFormat("webp")
+            .toBuffer();
+        })
+      );  
+        console.log("upload name is *********", uploadName)
+      console.log("resized images promises", resizedImages);
+
+      await Promise.all(
+        resizedImages.map(async (image, index) => {
+          const params = {
+            Bucket: BUCKET_NAME,
+            Key: `${uploadPath}/${imgTransforms[index].name}-${currentTime}-${uploadName}`,
+            Body: image,
+          };
+          const { Location, Key } = await s3.upload(params).promise();
+          urlsArray.push({ Location, Key });
+        })
+      );
     } else {
       // for uploading documents only
       const params = {
@@ -78,7 +102,7 @@ export async function S3UploadImage(fileContent, uploadName, key, fileType, uplo
         Body: fileContent,
       };
       const { Location, Key } = await s3.upload(params).promise();
-      urlsArray.push({Location, Key});
+      urlsArray.push({ Location, Key });
     }
     return {
       status: true,

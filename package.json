@@ -1,7 +1,7 @@
 {
   "name": "@partown/api-plugin-images3",
   "description": "Boilerplate Example plugin for the Reaction API",
-  "version": "4.6.3",
+  "version": "4.7.3",
   "main": "index.js",
   "type": "module",
   "engines": {

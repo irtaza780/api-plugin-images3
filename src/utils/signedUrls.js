@@ -11,6 +11,10 @@ const bucket = process.env.BUCKET_NAME;
 const expires = 3600;
 
 export default async function generateSignedUrl(object_key) {
+  if (!object_key) {
+    return "";
+  }
+
   const signedUrl = await s3.getSignedUrlPromise("getObject", {
     Bucket: bucket,
     Key: object_key,

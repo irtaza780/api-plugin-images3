@@ -8,7 +8,7 @@ const s3 = new AWS.S3();
 
 const bucket = process.env.BUCKET_NAME;
 // const object_key = "public/user/test/large-1675672214390-9hbt8dzg0nt81.jpg";
-const expires = 3600;
+const expires = 86400;
 
 export default async function generateSignedUrl(object_key) {
   if (!object_key) {

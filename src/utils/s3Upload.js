@@ -71,6 +71,7 @@ export async function S3UploadImage(
           console.log("transform items are ", name, size, fit, format, type);
 
           return await sharp(fileContent)
+            .rotate()
             .resize({
               height: size,
               fit: sharp.fit[fit],
@@ -79,8 +80,8 @@ export async function S3UploadImage(
             .toFormat("webp")
             .toBuffer();
         })
-      );  
-        console.log("upload name is *********", uploadName)
+      );
+      console.log("upload name is *********", uploadName);
       console.log("resized images promises", resizedImages);
 
       await Promise.all(
@@ -90,8 +91,18 @@ export async function S3UploadImage(
             Key: `${uploadPath}/${imgTransforms[index].name}-${currentTime}-${uploadName}`,
             Body: image,
           };
-          const { Location, Key } = await s3.upload(params).promise();
-          urlsArray.push({ Location, Key });
+          let { Location, Key } = await s3.upload(params).promise();
+          // const customRootUrl = process.env.ROOT_IMAGE_URL;
+
+          const customLocation = Location.replace(
+            "s3.amazonaws.com",
+            process.env.ROOT_IMAGE_URL
+          );
+
+          urlsArray.push({
+            Location: Location,
+            Key,
+          });
         })
       );
     } else {
@@ -102,6 +113,19 @@ export async function S3UploadImage(
         Body: fileContent,
       };
       const { Location, Key } = await s3.upload(params).promise();
+      if (process.env.ROOT_IMAGE_URL) {
+        Location = process.env.ROOT_IMAGE_URL;
+      }
+      const customLocation = Location.replace(
+        "s3.amazonaws.com",
+        process.env.ROOT_IMAGE_URL
+      );
+
+      urlsArray.push({
+        Location: Location,
+        Key,
+      });
+
       urlsArray.push({ Location, Key });
     }
     return {

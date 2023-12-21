@@ -24,36 +24,36 @@ const resolvers = {
                 priority: e.priority,
                 productId: e.productId,
                 URLs: {
-                  thumbnail: await getSignedUrl(e?.URLs.thumbnail),
-                  large: await getSignedUrl(e?.URLs.large),
-                  medium: await getSignedUrl(e?.URLs.medium),
-                  original: await getSignedUrl(e?.URLs.original),
-                  small: await getSignedUrl(e?.URLs.small),
+                  thumbnail: e?.URLs.thumbnail,
+                  large: e?.URLs.large,
+                  medium: e?.URLs.medium,
+                  original: e?.URLs.original,
+                  small: e?.URLs.small,
 
-                  unSignedThumbnail: e?.URLs.thumbnail,
-                  unSignedLarge: e?.URLs.large,
-                  unSignedMedium: e?.URLs.medium,
-                  unSignedOriginal: e?.URLs.original,
-                  unSignedSmall: e?.URLs.small,
+                  // unSignedThumbnail: e?.URLs.thumbnail,
+                  // unSignedLarge: e?.URLs.large,
+                  // unSignedMedium: e?.URLs.medium,
+                  // unSignedOriginal: e?.URLs.original,
+                  // unSignedSmall: e?.URLs.small,
                 },
               };
             })
           )
         : [];
     },
-    planMedia: async (parent, args, context, info) => {
-      return parent?.media
-        ? Promise.all(
-            parent?.planMedia?.map(async (e) => {
-              return {
-                name: e?.name,
-                url: await getSignedUrl(e?.url),
-                unsignedUrl: e?.url,
-              };
-            })
-          )
-        : [];
-    },
+    // planMedia: async (parent, args, context, info) => {
+    //   return parent?.media
+    //     ? Promise.all(
+    //         parent?.planMedia?.map(async (e) => {
+    //           return {
+    //             name: e?.name,
+    //             url: await getSignedUrl(e?.url),
+    //             unsignedUrl: e?.url,
+    //           };
+    //         })
+    //       )
+    //     : [];
+    // },
     documents: async (parent, args, context, info) => {
       return parent?.documents
         ? Promise.all(
@@ -89,92 +89,92 @@ const resolvers = {
           )
         : [];
     },
-    media: async (parent, args, context, info) => {
-      return parent?.media
-        ? Promise.all(
-            parent?.media?.map(async (e) => {
-              return {
-                priority: e.priority,
-                productId: e.productId,
-                URLs: {
-                  thumbnail: await getSignedUrl(e?.URLs.thumbnail),
-                  large: await getSignedUrl(e?.URLs.large),
-                  medium: await getSignedUrl(e?.URLs.medium),
-                  original: await getSignedUrl(e?.URLs.original),
-                  small: await getSignedUrl(e?.URLs.small),
+    // media: async (parent, args, context, info) => {
+    //   return parent?.media
+    //     ? Promise.all(
+    //         parent?.media?.map(async (e) => {
+    //           return {
+    //             priority: e.priority,
+    //             productId: e.productId,
+    //             URLs: {
+    //               thumbnail: e?.URLs.thumbnail,
+    //               large: e?.URLs.large,
+    //               medium: e?.URLs.medium,
+    //               original: e?.URLs.original,
+    //               small: e?.URLs.small,
 
-                  unSignedThumbnail: e?.URLs.thumbnail,
-                  unSignedLarge: e?.URLs.large,
-                  unSignedMedium: e?.URLs.medium,
-                  unSignedOriginal: e?.URLs.original,
-                  unSignedSmall: e?.URLs.small,
-                },
-              };
-            })
-          )
-        : [];
-    },
-    primaryImage: async (parent, args, context, info) => {
-      if (parent?.primaryImage) {
-        const URLs = parent.primaryImage.URLs;
-        const signedURLs = {};
-        for (const key in URLs) {
-          signedURLs[key] = await getSignedUrl(URLs[key]);
-        }
-        return { URLs: signedURLs };
-      } else {
-        return null;
-      }
-    },
-    planMedia: async (parent, args, context, info) => {
-      return parent?.media
-        ? Promise.all(
-            parent?.planMedia?.map(async (e) => {
-              return {
-                name: e?.name,
-                url: await getSignedUrl(e?.url),
-                unsignedUrl: e?.url,
-              };
-            })
-          )
-        : [];
-    },
+    //               unSignedThumbnail: e?.URLs.thumbnail,
+    //               unSignedLarge: e?.URLs.large,
+    //               unSignedMedium: e?.URLs.medium,
+    //               unSignedOriginal: e?.URLs.original,
+    //               unSignedSmall: e?.URLs.small,
+    //             },
+    //           };
+    //         })
+    //       )
+    //     : [];
+    // },
+    // primaryImage: async (parent, args, context, info) => {
+    //   if (parent?.primaryImage) {
+    //     const URLs = parent.primaryImage.URLs;
+    //     const signedURLs = {};
+    //     for (const key in URLs) {
+    //       signedURLs[key] = await getSignedUrl(URLs[key]);
+    //     }
+    //     return { URLs: signedURLs };
+    //   } else {
+    //     return null;
+    //   }
+    // },
+    // planMedia: async (parent, args, context, info) => {
+    //   return parent?.media
+    //     ? Promise.all(
+    //         parent?.planMedia?.map(async (e) => {
+    //           return {
+    //             name: e?.name,
+    //             url: await getSignedUrl(e?.url),
+    //             unsignedUrl: e?.url,
+    //           };
+    //         })
+    //       )
+    //     : [];
+    // },
   },
   Account: {
     unsignedProfileUrl: async (parent, args, context, info) =>
       parent?.profile?.picture,
-    picture: async (parent, args, context, info) =>
-      parent?.profile?.picture
-        ? await getSignedUrl(parent?.profile?.picture)
-        : "",
+    // picture: async (parent, args, context, info) =>
+    //   parent?.profile?.picture
+    //     ? await getSignedUrl(parent?.profile?.picture)
+    //     : "",
 
-    govId: (parent, args, context, info) => {
-      return parent?.govId
-        ? Promise.all(
-            parent?.govId?.map(async (e) => {
-              return {
-                key: e?.key,
-                value: await getSignedUrl(e?.value),
-                unsignedUrl: e?.value,
-              };
-            })
-          )
-        : [];
-      // account.govId ?? []
-    },
-    poAddress: async (parent, args, context, info) => {
-      return parent?.poAddress
-        ? Promise.all(
-            parent?.poAddress?.map(async (e) => {
-              return {
-                address: e.address,
-                type: e.type,
-                document: await getSignedUrl(e?.document),
-              };
-            })
-          )
-        : [];
-    },
+    // govId: (parent, args, context, info) => {
+    //   return parent?.govId
+    //     ? Promise.all(
+    //         parent?.govId?.map(async (e) => {
+    //           return {
+    //             key: e?.key,
+    //             value: await getSignedUrl(e?.value),
+    //             unsignedUrl: e?.value,
+    //           };
+    //         })
+    //       )
+    //     : [];
+    //   // account.govId ?? []
+    // },
+    // poAddress: async (parent, args, context, info) => {
+    //   return parent?.poAddress
+    //     ? Promise.all(
+    //         parent?.poAddress?.map(async (e) => {
+    //           return {
+    //             address: e.address,
+    //             type: e.type,
+    //             document: await getSignedUrl(e?.document),
+    //           };
+    //         })
+    //       )
+    //     : [];
+    // },
   },
 
   Transaction: {

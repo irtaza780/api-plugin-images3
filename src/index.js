@@ -162,19 +162,19 @@ const resolvers = {
     //     : [];
     //   // account.govId ?? []
     // },
-    // poAddress: async (parent, args, context, info) => {
-    //   return parent?.poAddress
-    //     ? Promise.all(
-    //         parent?.poAddress?.map(async (e) => {
-    //           return {
-    //             address: e.address,
-    //             type: e.type,
-    //             document: await getSignedUrl(e?.document),
-    //           };
-    //         })
-    //       )
-    //     : [];
-    // },
+    poAddress: async (parent, args, context, info) => {
+      return parent?.poAddress
+        ? Promise.all(
+            parent?.poAddress?.map(async (e) => {
+              return {
+                address: e.address,
+                type: e.type,
+                document: await getSignedUrl(e?.document),
+              };
+            })
+          )
+        : [];
+    },
   },
 
   Transaction: {
